@@ -41,4 +41,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Relationship to UserEventMapping
+    public function userEventMappings() {
+        return $this->hasMany(UserEventMapping::class, 'user_id');
+    }
+
+    // Relationship to Organizer
+    public function organizers() {
+        return $this->hasMany(Organizer::class, 'user_id');
+    }
+
+    // Relationship to Event
+    public function events() {
+        return $this->belongsToMany(Event::class, 'user_event_mappings', 'user_id', 'event_id');
+    }
 }
