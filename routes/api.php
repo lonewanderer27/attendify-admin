@@ -20,3 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('users', [UserController::class, 'index']);
+Route::get('users/id/{id}', [UserController::class, 'show']);
+Route::get('users/username/{username}', [UserController::class, 'showByUsername']);
+Route::post('users', [UserController::class, 'store']);
+
+Route::post('login/unsecure', [UserController::class, 'login_unsecure']);
+Route::post('login/secure', [UserController::class, 'login_secure']);

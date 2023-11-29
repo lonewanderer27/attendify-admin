@@ -43,6 +43,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Find a user by username.
+     *
+     * @param string $username
+     * @return \App\Models\User|null
+     */
+    public static function findByUsername($username)
+    {
+        return self::where('username', $username)->first();
+    }
+
     // Relationship to UserEventMapping
     public function userEventMappings() {
         return $this->hasMany(UserEventMapping::class, 'user_id');
