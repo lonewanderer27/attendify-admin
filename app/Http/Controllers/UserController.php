@@ -103,9 +103,9 @@ class UserController extends Controller
         }
     }
 
-    public function showByUsername($username)
+    public function showByEmail($email)
     {
-        $user = User::findByUsername($username);
+        $user = User::findByEmail($email);
         if ($user) {
             return response()->json([
                 "user" => $user,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OTPController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('users', [UserController::class, 'index']);
 Route::get('users/id/{id}', [UserController::class, 'show']);
-Route::get('users/username/{username}', [UserController::class, 'showByUsername']);
+Route::get('users/email/{email}', [UserController::class, 'showByEmail']);
 Route::post('users', [UserController::class, 'store']);
 
 Route::post('login/unsecure', [UserController::class, 'login_unsecure']);
 Route::post('login/secure', [UserController::class, 'login_secure']);
+
+Route::get('otp', [OTPController::class, 'index']);
+Route::post('otp', [OTPController::class, 'store']);

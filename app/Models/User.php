@@ -19,7 +19,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'username',
         'email',
         'password',
     ];
@@ -44,14 +43,14 @@ class User extends Authenticatable
     ];
 
     /**
-     * Find a user by username.
+     * Find a user by email.
      *
-     * @param string $username
+     * @param string $email
      * @return \App\Models\User|null
      */
-    public static function findByUsername($username)
+    public static function findByEmail($email)
     {
-        return self::where('username', $username)->first();
+        return self::where('email', $email)->first();
     }
 
     // Relationship to UserEventMapping
