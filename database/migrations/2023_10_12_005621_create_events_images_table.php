@@ -16,7 +16,7 @@ class CreateEventsImagesTable extends Migration
         Schema::create('events_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained()->onDelete('cascade');  // Foreign key to events table
-            $table->bytea('image_data');                                        // Image file
+            $table->binary('image_data');                                        // Image file
             $table->timestamps();
         });
     }
