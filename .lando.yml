@@ -2,4 +2,3 @@ name: qrcodeattendance
 recipe: laravel
 config:
   webroot: public
-  database: postgres
