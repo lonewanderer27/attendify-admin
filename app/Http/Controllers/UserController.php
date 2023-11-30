@@ -125,7 +125,6 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "name" => "required",
-            "username" => "required|unique:users",
             "email" => "required|unique:users",
             "password" => "required"
         ]);
@@ -140,7 +139,6 @@ class UserController extends Controller
 
         $user = User::create([
             "name" => $request->name,
-            "username" => $request->username,
             "email" => $request->email,
             "password" => Hash::make($request->password)
         ]);
