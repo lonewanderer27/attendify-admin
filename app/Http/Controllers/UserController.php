@@ -22,7 +22,7 @@ class UserController extends Controller
     public function login_secure(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            "username" => "required",
+            "email" => "required",
             "password" => "required"
         ]);
 
@@ -34,13 +34,13 @@ class UserController extends Controller
             ]);
         }
 
-        $user = User::where("username", $request->username)->first();
+        $user = User::where("email", $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            $token = $user->createToken("auth_token")->plainTextToken;
+            // $token = $user->createToken("auth_token")->plainTextToken;
             return response()->json([
                 "user" => $user,
-                "token" => $token,
+                // "token" => $token,
                 "error" => false,
                 "success" => true
             ]);
@@ -56,7 +56,7 @@ class UserController extends Controller
     public function login_unsecure(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            "username" => "required",
+            "email" => "required",
             "password" => "required"
         ]);
 
@@ -68,11 +68,13 @@ class UserController extends Controller
             ]);
         }
 
-        $user = User::where("username", $request->username)->first();
+        $user = User::where("email", $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
+            // $token = $user->createToken("auth_token")->plainTextToken;
             return response()->json([
                 "user" => $user,
+                // "token" => $token,
                 "error" => false,
                 "success" => true
             ]);
