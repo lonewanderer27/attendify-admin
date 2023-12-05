@@ -49,7 +49,7 @@ body {
 
 .search {
     background-color: #f1f4f8;
-    border-radius: 50px;
+    border-radius: 10px;
     width: 400px;
     padding: 5px;
     display: flex;
@@ -284,7 +284,6 @@ a {
 }
 
 .card--stats {
-    display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 5px;
@@ -490,6 +489,121 @@ th {
     color: #e86786;
 }
 
+/* Modal styles matching existing theme */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 6% auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+    width: 60%;
+    max-width: 500px;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .modal-content h1{
+    margin-bottom: 20px;
+    font-size: 30px;
+  }
+
+  .modal-content label{
+    margin-bottom: 10px;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+  }
+  
+  /* Input fields in the modal */
+  .modal-content input[type="text"],
+  .modal-content input[type="date"],
+  .modal-content input[type="time"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .modal-content label {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .modal-content button[type="submit"] {
+    padding: 12px 20px;
+    background-color: #5073fb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-content button[type="submit"]:hover {
+    background-color: #385fc6;
+  }
+  
+  /* Styles for the email input and tags */
+    .emails-input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-family: 'Roboto', sans-serif;
+        margin-bottom: 20px;
+    }
+
+    .emails-input .tag-input {
+        box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+    }
+
+  .emails-input .tags {
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .tag {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 5px 8px;
+    border-radius: 15px;
+    margin: 5px;
+  }
+  
+  .tag .email {
+    margin-right: 5px;
+  }
+  
+  .tag .remove {
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
 
 /* responsive starts here */
 
