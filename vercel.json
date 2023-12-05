@@ -13,7 +13,7 @@
     },
     {
       "src": "/(css|js)/(.*)$",
-      "dest": "/api/assets.php?type=$1&file=$2"
+      "dest": "/public/$1/$2"
     }
   ],
   "env": {
