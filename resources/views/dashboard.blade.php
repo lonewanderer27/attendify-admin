@@ -36,13 +36,13 @@
                         <span class="sidebar--item">Dashboard</span>
                     </a>
                 </li>
-                    <a href="#">
+                    <a href="{{ route('activity') }}">
                         <span class="icon"><i class="ri-line-chart-line"></i></span>
                         <span class="sidebar--item">Activity</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route('support')}}">
                         <span class="icon"><i class="ri-customer-service-line"></i></span>
                         <span class="sidebar--item">Support</span>
                     </a>
@@ -50,13 +50,13 @@
             </ul>
             <ul class="sidebar--bottom-items">
                 <li>
-                    <a href="#">
+                    <a href="{{ route('settings') }}">
                         <span class="icon"><i class="ri-settings-3-line"></i></span>
                         <span class="sidebar--item">Settings</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route('signup')}}">
                         <span class="icon"><i class="ri-logout-box-r-line"></i></span>
                         <span class="sidebar--item">Logout</span>
                     </a>
