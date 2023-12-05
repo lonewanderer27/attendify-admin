@@ -3,6 +3,7 @@ let myComm = document.getElementById("comments");
 let scanner = new Instascan.Scanner({
     video: document.getElementById("preview"),
 });
+console.log(scanner)
 Instascan.Camera.getCameras()
     .then(function (cameras) {
         if (cameras.length > 0) {

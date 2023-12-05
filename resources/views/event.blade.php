@@ -9,7 +9,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
     <script src="https://github.com/schmich/instascan/releases/download/1.0.0/instascan.min.js"></script>
-    <!--<script src="script.js"></script>-->
+
     <!--FOR THE DATABASE-->
     <script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
 
@@ -65,7 +65,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 
     <script scr="{{ asset('js/event/main.js') }}"> </script>
-
     <script src="{{ asset('js/event/clock.js')}}" type="text/javascript"> </script>
 </body>
 
