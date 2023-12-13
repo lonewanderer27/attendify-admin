@@ -14,7 +14,7 @@ class UserController extends Controller
         $users = User::all();
         return response()->json([
             "users" => $users,
-            "error" => false,
+            "error" => null,
             "success" => true
         ]);
     }
@@ -22,7 +22,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            "email" => "required",
+            "email" => "required|email",
             "password" => "required"
         ]);
 
@@ -31,17 +31,17 @@ class UserController extends Controller
                 "message" => $validator->errors(),
                 "error" => true,
                 "success" => false
-            ]);
+            ], 422); // 422 Unprocessable Entity
         }
 
         $user = User::where("email", $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-             $token = $user->createToken("auth_token")->plainTextToken;
+            $token = $user->createToken("auth_token")->plainTextToken;
             return response()->json([
                 "user" => $user,
                 "token" => $token,
-                "error" => false,
+                "error" => null,
                 "success" => true
             ]);
         } else {
@@ -49,13 +49,14 @@ class UserController extends Controller
                 "message" => "User not found or incorrect password",
                 "error" => true,
                 "success" => false
-            ]);
+            ], 401); // 401 Unauthorized
         }
     }
 
     public function show($id)
     {
         $user = User::find($id);
+
         if ($user) {
             return response()->json([
                 "user" => $user,
@@ -67,13 +68,14 @@ class UserController extends Controller
                 "message" => "User not found",
                 "error" => "User not found",
                 "success" => false
-            ]);
+            ], 404); // 404 Not Found
         }
     }
 
     public function showByEmail($email)
     {
-        $user = User::findByEmail($email);
+        $user = User::where('email', $email)->first();
+
         if ($user) {
             return response()->json([
                 "user" => $user,
@@ -85,7 +87,7 @@ class UserController extends Controller
                 "message" => "User not found",
                 "error" => "User not found",
                 "success" => false
-            ]);
+            ], 404); // 404 Not Found
         }
     }
 
@@ -93,7 +95,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "name" => "required",
-            "email" => "required|unique:users",
+            "email" => "required|email|unique:users",
             "password" => "required"
         ]);
 
@@ -102,7 +104,7 @@ class UserController extends Controller
                 "message" => $validator->errors(),
                 "error" => true,
                 "success" => false
-            ]);
+            ], 422); // 422 Unprocessable Entity
         }
 
         $user = User::create([
@@ -117,13 +119,13 @@ class UserController extends Controller
                 "message" => "User created",
                 "error" => null,
                 "success" => true
-            ]);
+            ], 201); // 201 Created
         } else {
             return response()->json([
                 "message" => "User not created",
                 "error" => "User not created",
                 "success" => false
-            ]);
+            ], 500); // 500 Internal Server Error
         }
     }
 }
