@@ -23,6 +23,7 @@ class AttendeeController extends Controller
     public function show($id): \Illuminate\Http\JsonResponse
     {
         $attendee = Attendee::find($id);
+
         if ($attendee) {
             return response()->json([
                 "attendee" => $attendee,
@@ -34,7 +35,7 @@ class AttendeeController extends Controller
                 "message" => "Attendee not found",
                 "error" => "Attendee not found",
                 "success" => false
-            ]);
+            ], 404); // 404 Not Found
         }
     }
 
@@ -47,7 +48,7 @@ class AttendeeController extends Controller
                 "error" => "Event not found!",
                 "message" => "Event not found!",
                 "success" => false
-            ], 404);
+            ], 404); // 404 Not Found
         }
 
         $attendees = Attendee::where('event_id', $event_id)->get();
@@ -69,7 +70,7 @@ class AttendeeController extends Controller
                 "message" => "Attendee not found!",
                 "error" => "Attendee not found!",
                 "success" => false,
-            ]);
+            ], 404); // 404 Not Found
         }
 
         $attendee->status = true;
@@ -114,7 +115,7 @@ class AttendeeController extends Controller
             ->where('event_id', $request->event_id)
             ->exists();
 
-        $status = (bool)$isInvited;
+        $status = (bool) $isInvited;
 
         $attendee = Attendee::create([
             'user_id' => $request->user_id,
@@ -123,12 +124,14 @@ class AttendeeController extends Controller
         ]);
 
         if ($attendee) {
+            $statusCode = $status ? 200 : 202; // 200 OK or 202 Accepted
+
             return response()->json([
                 "attendee" => $attendee,
                 "message" => $status ? "Attendance approved" : "Attendance pending",
                 "error" => null,
                 "success" => true
-            ], 201); // 201 Created
+            ], $statusCode);
         } else {
             return response()->json([
                 "error" => "Attendance not attended",
