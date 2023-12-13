@@ -2,3 +2,10 @@ name: qrcodeattendance
 recipe: laravel
 config:
   webroot: public
+services:
+  database:
+    type: postgres
+    creds:
+      database: passifi
+      user: passifi
+      password: NO PASSWORD
