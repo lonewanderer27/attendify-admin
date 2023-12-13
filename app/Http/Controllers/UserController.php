@@ -19,7 +19,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function login_secure(Request $request)
+    public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
             "email" => "required",
@@ -37,44 +37,10 @@ class UserController extends Controller
         $user = User::where("email", $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            // $token = $user->createToken("auth_token")->plainTextToken;
+             $token = $user->createToken("auth_token")->plainTextToken;
             return response()->json([
                 "user" => $user,
-                // "token" => $token,
-                "error" => false,
-                "success" => true
-            ]);
-        } else {
-            return response()->json([
-                "message" => "User not found or incorrect password",
-                "error" => true,
-                "success" => false
-            ]);
-        }
-    }
-
-    public function login_unsecure(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            "email" => "required",
-            "password" => "required"
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                "message" => $validator->errors(),
-                "error" => true,
-                "success" => false
-            ]);
-        }
-
-        $user = User::where("email", $request->email)->first();
-
-        if ($user && Hash::check($request->password, $user->password)) {
-            // $token = $user->createToken("auth_token")->plainTextToken;
-            return response()->json([
-                "user" => $user,
-                // "token" => $token,
+                "token" => $token,
                 "error" => false,
                 "success" => true
             ]);
@@ -93,13 +59,13 @@ class UserController extends Controller
         if ($user) {
             return response()->json([
                 "user" => $user,
-                "error" => false,
+                "error" => null,
                 "success" => true
             ]);
         } else {
             return response()->json([
                 "message" => "User not found",
-                "error" => true,
+                "error" => "User not found",
                 "success" => false
             ]);
         }
@@ -111,13 +77,13 @@ class UserController extends Controller
         if ($user) {
             return response()->json([
                 "user" => $user,
-                "error" => false,
+                "error" => null,
                 "success" => true
             ]);
         } else {
             return response()->json([
                 "message" => "User not found",
-                "error" => true,
+                "error" => "User not found",
                 "success" => false
             ]);
         }
@@ -149,13 +115,13 @@ class UserController extends Controller
             return response()->json([
                 "user" => $user,
                 "message" => "User created",
-                "error" => false,
+                "error" => null,
                 "success" => true
             ]);
         } else {
             return response()->json([
                 "message" => "User not created",
-                "error" => true,
+                "error" => "User not created",
                 "success" => false
             ]);
         }

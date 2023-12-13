@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserEventMapping extends Model
+class Attendee extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'event_id',
+        'user_id',
+        'status',
     ];
 
     // Relationship to User
@@ -21,6 +22,6 @@ class UserEventMapping extends Model
 
     // Relationship to Event
     public function event() {
-        return $this->belongsTo(Event::class, 'event_id');
+        return $this->belongsTo(Event::class, "event_id");
     }
 }

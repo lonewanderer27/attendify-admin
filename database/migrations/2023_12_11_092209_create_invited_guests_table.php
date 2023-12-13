@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEventsImagesTable extends Migration
+class CreateInvitedGuestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateEventsImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('events_images', function (Blueprint $table) {
+        Schema::create('invited_guests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');  // Foreign key to events table
-            $table->binary('image_data');                                        // Image file
             $table->timestamps();
+            $table->foreignId('event_id')->references('id')->on('events');
+            $table->foreignId('user_id')->references('id')->on('users');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateEventsImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events_images');
+        Schema::dropIfExists('invited_guests');
     }
 }

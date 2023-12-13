@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrganizerTable extends Migration
+class CreateAttendeesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateOrganizerTable extends Migration
      */
     public function up()
     {
-        Schema::create('organizer', function (Blueprint $table) {
+        Schema::create('attendees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to users table
-            $table->foreignId('event_id')->constrained()->onDelete('cascade'); // Foreign key to events table
             $table->timestamps();
+            $table->foreignId('event_id')->references('id')->on('events');
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->boolean('status')->default(false);
         });
     }
 
@@ -28,6 +29,6 @@ class CreateOrganizerTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organizer');
+        Schema::dropIfExists('attendees');
     }
 }
