@@ -32,13 +32,13 @@ class InvitedGuestController extends Controller
             ], 404);
         }
 
-        $guests = InvitedGuest::where('event_id', $event_id);
+        $guests = InvitedGuest::where('event_id', $event_id)->get();
 
         return response()->json([
             "event" => $event,
             "invited_guests" => $guests,
             "error" => null,
-            "success" => false
+            "success" => true
         ]);
     }
 
@@ -55,7 +55,7 @@ class InvitedGuestController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:user'
+            'email' => 'required|email|exists:users,email'
         ]);
 
         if ($validator->fails()) {
@@ -65,8 +65,7 @@ class InvitedGuestController extends Controller
             ], 422);
         }
 
-
-        $user = User::find('email', $request->email);
+        $user = User::where('email', $request->email)->first();
 
         if ($user) {
             $invitedGuest = InvitedGuest::create([
@@ -81,13 +80,13 @@ class InvitedGuestController extends Controller
                 "invited_guest" => $invitedGuest,
                 "error" => null,
                 "success" => true
-            ]);
+            ], 201); // 201 Created
         } else {
             return response()->json([
                 "message" => "User cannot be found",
                 "error" => "User cannot be found",
-                "success" => true
-            ]);
+                "success" => false
+            ], 404);
         }
     }
 
@@ -139,6 +138,6 @@ class InvitedGuestController extends Controller
             "invited_guests" => $invitedGuests,
             "error" => null,
             "success" => true
-        ]);
+        ], 201); // 201 Created
     }
 }
