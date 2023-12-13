@@ -25,11 +25,11 @@ class EventController extends Controller
             $eventsQuery->whereDate('start', '<=', $endDate);
         }
 
-        $events = $eventsQuery->withCount('attendees')->get()->all();
+        $events = $eventsQuery->withCount('attendees')->get();
 
         return response()->json([
             "events" => $events,
-            "error" => false,
+            "error" => null,
             "success" => true
         ]);
     }
@@ -40,14 +40,15 @@ class EventController extends Controller
 
         if (!$event) {
             return response()->json([
+                "message" => "Event not found",
                 "error" => "Event not found",
                 "success" => false
-            ]);
+            ], 404); // 404 Not Found
         }
 
         return response()->json([
             "event" => $event,
-            "error" => false,
+            "error" => null,
             "success" => true
         ]);
     }
@@ -68,13 +69,13 @@ class EventController extends Controller
             'invite_code' => 'required|string|unique:events'
         ]);
 
-
         if ($validator->fails()) {
             return response()->json([
-                "error" => null,
+                "message" => "Validation failed",
                 "errors" => $validator->errors(),
+                "error" => true,
                 "success" => false
-            ]);
+            ], 422); // 422 Unprocessable Entity
         }
 
         $event = Event::create([
@@ -97,14 +98,15 @@ class EventController extends Controller
             return response()->json([
                 "event" => $eventWithAttendeesCount,
                 "message" => 'Event created successfully',
-                "error" => false,
+                "error" => null,
                 "success" => true
-            ]);
+            ], 201); // 201 Created
         } else {
             return response()->json([
+                "message" => "Event not created",
                 "error" => "Event not created",
                 "success" => false
-            ], 500);
+            ], 500); // 500 Internal Server Error
         }
     }
 }
