@@ -29,7 +29,12 @@ class Event extends Model
     }
 
     // Relationship to Attendee
-    public function attendee() {
+    public function attendees() {
         return $this->hasMany(Attendee::class, 'event_id');
+    }
+
+    // Relationship to InvitedGuests
+    public function invited_guests() {
+        return $this->hasMany(InvitedGuest::class, 'event_id');
     }
 }

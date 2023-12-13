@@ -8,9 +8,25 @@ use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
-    public function index(): \Illuminate\Http\JsonResponse
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $events = Event::all();
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $eventsQuery = Event::query();
+
+        // If start_date is provided, filter events from that date onwards
+        if ($startDate) {
+            $eventsQuery->whereDate('start', '>=', $startDate);
+        }
+
+        // If end_date is provided, filter events up to that date
+        if ($endDate) {
+            $eventsQuery->whereDate('start', '<=', $endDate);
+        }
+
+        $events = $eventsQuery->withCount('attendees')->get()->all();
+
         return response()->json([
             "events" => $events,
             "error" => false,
@@ -20,7 +36,7 @@ class EventController extends Controller
 
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $event = Event::where("id", $id)->first();
+        $event = Event::withCount('attendees')->find($id);
 
         if (!$event) {
             return response()->json([
@@ -75,10 +91,13 @@ class EventController extends Controller
             'invite_code' => $request->invite_code
         ]);
 
-        if ($event) {
+        $eventWithAttendeesCount = Event::withCount('attendees')->find($event->id);
+
+        if ($eventWithAttendeesCount) {
             return response()->json([
-                "event" => $event,
-                "error" => null,
+                "event" => $eventWithAttendeesCount,
+                "message" => 'Event created successfully',
+                "error" => false,
                 "success" => true
             ]);
         } else {
