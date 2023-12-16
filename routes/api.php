@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\OTPController;
 use App\Http\Controllers\AttendeeController;
 use App\Http\Controllers\InvitedGuestController;
 use App\Http\Controllers\UserController;
