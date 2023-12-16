@@ -13,12 +13,12 @@ class Event extends Model
         'title',
         'photo',
         'description',
-        'start',
-        'end',
+        'date',
+        'time',
         'location',
-        'capacity',
         'organizer',
         'organizer_email',
+        'organizer_approval',
         'user_id',
         'invite_code'
     ];

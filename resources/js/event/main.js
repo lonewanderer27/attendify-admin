@@ -1,20 +1,18 @@
+let video = document.getElementById('preview');
+
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (stream) {
+      video.srcObject = stream;
+    })
+    .catch(function (error) {
+      console.log("Something went wrong!");
+    });
+}
+
 let myComm = document.getElementById("comments");
 
-let scanner = new Instascan.Scanner({
-    video: document.getElementById("preview"),
-});
 console.log(scanner)
-Instascan.Camera.getCameras()
-    .then(function (cameras) {
-        if (cameras.length > 0) {
-            scanner.start(cameras[0]);
-        } else {
-            alert("NO CAMERAS FOUND");
-        }
-    })
-    .catch(function (e) {
-        console.error(e);
-    });
 
 scanner.addListener("scan", function (c) {
     document.getElementById("comment").value = c;

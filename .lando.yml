@@ -1,4 +1,4 @@
-name: qrcodeattendance
+name: attendify
 recipe: laravel
 config:
   webroot: public

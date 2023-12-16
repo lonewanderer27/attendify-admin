@@ -7,248 +7,311 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="{{ mix('js/dashboard.js') }}" defer></script>
     <title>Dashboard | Passifi</title>
 </head>
 
 <body>
-    <section class="header">
-        <div class="logo">
-            <img src="{{ asset('images/passifi-logo.png') }}" alt="" class="passifi-logo">
-        </div>
-        <div class="search--notification--profile">
-            <div class="search">
-                <input type="text" placeholder="Search Event">
-                <button><i class="ri-search-2-line"></i></button>
-            </div>
-            <div class="notification--profile">
-                <div class="picon profile">
-                    <i class="ri-account-circle-fill"></i>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="main">
-        <div class="sidebar">
-            <ul class="sidebar--items">
-                <li>
-                    <a href="#" id="active--link">
-                        <span class="icon"><i class="ri-layout-grid-line"></i></span>
-                        <span class="sidebar--item">Dashboard</span>
-                    </a>
-                </li>
-                <a href="{{ route('activity') }}">
-                    <span class="icon"><i class="ri-line-chart-line"></i></span>
-                    <span class="sidebar--item">Activity</span>
-                </a>
-                </li>
-                <li>
-                    <a href="{{ route('support') }}">
-                        <span class="icon"><i class="ri-customer-service-line"></i></span>
-                        <span class="sidebar--item">Support</span>
-                    </a>
-                </li>
-            </ul>
-            <ul class="sidebar--bottom-items">
-                <li>
-                    <a href="{{ route('settings') }}">
-                        <span class="icon"><i class="ri-settings-3-line"></i></span>
-                        <span class="sidebar--item">Settings</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('signup') }}">
-                        <span class="icon"><i class="ri-logout-box-r-line"></i></span>
-                        <span class="sidebar--item">Logout</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="main--content">
-            <div class="overview">
-                <div class="title">
-                    <h1 class="section--title">EVENTS</h1>
-                    <div class="events--right--btns">
-                        <select name="date" id="date" class="dropdown">
-                            <option value="today">Today</option>
-                            <option value="future">Future</option>
-                            <option value="past">Past</option>
-                            <option value="alltime">All</option>
-                        </select>
+@include("partials._header")
+<section class="main">
+    @include("partials._sidebar")
+    <div class="main--content">
+        <div class="overview">
+            <div class="title">
+                <h1 class="section--title">EVENTS</h1>
+                <div class="events--right--btns">
+                    <select name="date" id="date" class="dropdown">
+                        <option value="today">Today</option>
+                        <option value="future">Future</option>
+                        <option value="past">Past</option>
+                        <option value="alltime">All</option>
+                    </select>
 
-                        <button class="add" onclick="openModal()"><i class="ri-add-line"></i>Add Event</button>
-                        <div class="modal" id="eventModal">
-                            <div class="modal-content">
-                              <span class="close" onclick="closeModal()">&times;</span>
-                              <h1>Add Event</h1>
-                              <form id="eventForm">
+                    <button class="add" onclick="openModal()"><i class="ri-add-line"></i>Add Event</button>
+                    <div class="modal" id="eventModal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <h1>Add Event</h1>
+                            <form id="eventForm">
+                                <input style="display: none;" type="text" name="user_id"
+                                       value="{{ auth()->user()->id }}" required><br><br>
+
                                 <label for="eventName">Event Name:</label>
-                                <input type="text" id="eventName" name="eventName" required><br><br>
-                                
+                                <input type="text" id="eventName" name="title" required><br><br>
+
                                 <label for="eventDate">Date:</label>
-                                <input type="date" id="eventDate" name="eventDate" required><br><br>
-                                
+                                <input type="date" id="eventDate" name="date" pattern="\d{4}-\d{2}-\d{2}"
+                                       required><br><br>
+
                                 <label for="eventTime">Time:</label>
-                                <input type="time" id="eventTime" name="eventTime" required><br><br>
-                                
+                                <input type="time" id="eventTime" name="time" required><br><br>
+
                                 <label for="eventLocation">Location:</label>
-                                <input type="text" id="eventLocation" name="eventLocation" required><br><br>
-                                
+                                <input type="text" id="eventLocation" name="location" required><br><br>
+
                                 <label for="eventGuest">Guests to Passifi:</label>
                                 <div class="emails-input">
-                                    <input class="tag-input" type="text" id="email-input" placeholder="Add email" onkeydown="handleEmailInput(event)">
+                                    <input class="tag-input" type="text" id="email-input" placeholder="Add email"
+                                           onkeydown="handleEmailInput(event)">
                                     <div class="tags" id="tags-container">
                                     </div>
                                 </div>
 
+                                <label for="eventCode">Set Invite Code:</label>
+                                <input type="text" id="eventCode" name="invite_code" required><br><br>
+
                                 <label for="eventImage">Set Event Photo:</label>
                                 <input type="file" id="eventImage" name="eventImage"><br><br>
-                                
+
+                                <hr> <!-- Line divider -->
+
+                                <label for="organizerName">Name of Organizer:</label>
+                                <input type="text" id="organizerName" name="organizer" required><br><br>
+
+                                <label for="organizerEmail">Organizer Email:</label>
+                                <input type="text" id="organizerEmail" name="organizer_email" required><br><br>
+
+                                <div class="toggle">
+                                    <label for="organizerApproval">Organizer Approval:</label>
+                                    <label class="switch">
+                                        <input type="checkbox" name="organizer_approval" id="organizerApproval">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
                                 <button type="submit" class="add">Save</button>
-                              </form>
-                            </div>
-                          </div>                          
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <div class="cards">
+            </div>
+            <div class="cards">
+                @foreach ($events as $event)
                     <div class="card card-1">
                         <div class="card--data">
                             <div class="card--content">
                                 <img src="{{ asset('images/conference-img.jpg') }}" alt="" class="card--img">
-                                <h1 class="card--title">EVENT NAME</h1>
+                                <h1 class="card--title">{{ $event->title }}</h1>
                                 <h5>ATTENDEES</h5>
-                                <h1>- / n</h1>
+                                <h1>
+                                    @if($event->invited_guests_count > 0)
+                                        {{ $event->attendees_count }} / {{ $event->invited_guests_count }}
+                                    @else
+                                        {{ $event->attendees_count }}
+                                    @endif
+                                </h1>
                             </div>
                         </div>
                         <div class="card--stats">
-                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>DD/MM/YYYY</span>
-                            <span><i class="ri-time-fill card--icon stat--icon"></i>HH:MM</span>
-                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>LOCATION</span>
+                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>
+                                {{ $event->date }}
+                            </span>
+                            <span><i class="ri-time-fill card--icon stat--icon"></i>{{ $event->time }}</span>
+                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>{{ $event->location }}</span>
+                        </div>
+                        <div class="card--buttons">
+                            <button class="scan-button">Scan</button>
+                            <button class="admit-deny-button">Admit and Deny</button>
                         </div>
                     </div>
-                    <div class="card card-1">
-                        <div class="card--data">
-                            <div class="card--content">
-                                <img src="{{ asset('images/conference-img.jpg') }}" alt="" class="card--img">
-                                <h1 class="card--title">EVENT NAME</h1>
-                                <h5>ATTENDEES</h5>
-                                <h1>- / n</h1>
-                            </div>
-                        </div>
-                        <div class="card--stats">
-                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>DD/MM/YYYY</span>
-                            <span><i class="ri-time-fill card--icon stat--icon"></i>HH:MM</span>
-                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>LOCATION</span>                        
-                        </div>
-                    </div>
-                    <div class="card card-1">
-                        <div class="card--data">
-                            <div class="card--content">
-                                <img src="{{ asset('images/conference-img.jpg') }}" alt="" class="card--img">
-                                <h1 class="card--title">EVENT NAME</h1>
-                                <h5>ATTENDEES</h5>
-                                <h1>- / n</h1>
-                             </div>
-                        </div>
-                        <div class="card--stats">
-                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>DD/MM/YYYY</span>
-                            <span><i class="ri-time-fill card--icon stat--icon"></i>HH:MM</span>
-                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>LOCATION</span>                        
-                        </div>
-                    </div>
-                    <div class="card card-1">
-                        <div class="card--data">
-                            <div class="card--content">
-                                <img src="{{ asset('images/conference-img.jpg') }}" alt="" class="card--img">
-                                <h1 class="card--title">EVENT NAME</h1>
-                                <h5>ATTENDEES</h5>
-                                <h1>- / n</h1>
-                            </div>
-                        </div>
-                        <div class="card--stats">
-                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>DD/MM/YYYY</span>
-                            <span><i class="ri-time-fill card--icon stat--icon"></i>HH:MM</span>
-                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>LOCATION</span>                        
-                        </div>
+                @endforeach
+            </div>
+
+            <div class="admit-deny-overlay" id="admitDenyOverlay">
+                <div class="admit-deny-modal">
+                    <span class="close" onclick="closeAdmitDenyModal()">&times;</span>
+                    <h1>Event Name</h1>
+                    <!-- Insert the table HTML here -->
+                    <div class="admit-deny-table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Requester</th>
+                                <th></th>
+                                <th>Email</th>
+                                <th>Settings</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="profile-column">
+                                    <div class="profile-picture"
+                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
+                                        <!-- Empty container for background image -->
+                                    </div>
+                                </td>
+                                <td>Name 1</td>
+                                <td>Email 1</td>
+                                <td>
+                                    <button class="admit-button">Admit</button>
+                                    <button class="deny-button">Deny</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="profile-column">
+                                    <div class="profile-picture"
+                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
+                                        <!-- Empty container for background image -->
+                                    </div>
+                                </td>
+                                <td>Name 1</td>
+                                <td>Email 1</td>
+                                <td>
+                                    <button class="admit-button">Admit</button>
+                                    <button class="deny-button">Deny</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="profile-column">
+                                    <div class="profile-picture"
+                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
+                                        <!-- Empty container for background image -->
+                                    </div>
+                                </td>
+                                <td>Name 1</td>
+                                <td>Email 1</td>
+                                <td>
+                                    <button class="admit-button">Admit</button>
+                                    <button class="deny-button">Deny</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="profile-column">
+                                    <div class="profile-picture"
+                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
+                                        <!-- Empty container for background image -->
+                                    </div>
+                                </td>
+                                <td>Name 1</td>
+                                <td>Email 1</td>
+                                <td>
+                                    <button class="admit-button">Admit</button>
+                                    <button class="deny-button">Deny</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="profile-column">
+                                    <div class="profile-picture"
+                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
+                                        <!-- Empty container for background image -->
+                                    </div>
+                                </td>
+                                <td>Name 1</td>
+                                <td>Email 1</td>
+                                <td>
+                                    <button class="admit-button">Admit</button>
+                                    <button class="deny-button">Deny</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="profile-column">
+                                    <div class="profile-picture"
+                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
+                                        <!-- Empty container for background image -->
+                                    </div>
+                                </td>
+                                <td>Name 1</td>
+                                <td>Email 1</td>
+                                <td>
+                                    <button class="admit-button">Admit</button>
+                                    <button class="deny-button">Deny</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-        {{-- <div class="main--content">
-            <div class="overview">
-                <div class="title">
-                    <h1 class="section--title">EVENTS</h1>
-                    <div class="events--right--btns">
-                        <select name="date" id="date" class="dropdown">
-                            <option value="today">Today</option>
-                            <option value="future">Future</option>
-                            <option value="past">Past</option>
-                            <option value="alltime">All</option>
-                        </select>
-                        <button class="add"><i class="ri-add-line"></i>Add Event</button>
-                    </div>
-                </div>
-                <div class="cards">
-                    <div class="card card-1">
-                        <div class="card--data">
-                            <div class="card--content">
-                                <img src="{{ asset('images/conference-img.jpg') }}" alt="" class="card--img">
-                                <h1 class="card--title">EVENT NAME</h1>
-                                <h5>ATTENDEES</h5>
-                                <h1>- / n</h1>
-                            </div>
-                        </div>
-                        <div class="card--stats">
-                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>DD/MM/YYYY</span>
-                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>LOCATION</span>
-                        </div>
-                    </div>
-                    <div class="card card-1">
-                        <div class="card--data">
-                            <div class="card--content">
-                                <img src="{{ asset('images/conference-img.jpg') }}" alt="" class="card--img">
-                                <h1 class="card--title">EVENT NAME</h1>
-                                <h5>ATTENDEES</h5>
-                                <h1>- / n</h1>
-                            </div>
-                        </div>
-                        <div class="card--stats">
-                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>DD/MM/YYYY</span>
-                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>LOCATION</span>
-                        </div>
-                    </div>
-                    <div class="card card-1">
-                        <div class="card--data">
-                            <div class="card--content">
-                                <img src="{{ asset('images/conference-img.jpg') }}" alt="" class="card--img">
-                                <h1 class="card--title">EVENT NAME</h1>
-                                <h5>ATTENDEES</h5>
-                                <h1>- / n</h1>
-                            </div>
-                        </div>
-                        <div class="card--stats">
-                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>DD/MM/YYYY</span>
-                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>LOCATION</span>
-                        </div>
-                    </div>
-                    <div class="card card-1">
-                        <div class="card--data">
-                            <div class="card--content">
-                                <img src="{{ asset('images/conference-img.jpg') }}" alt="" class="card--img">
-                                <h1 class="card--title">EVENT NAME</h1>
-                                <h5>ATTENDEES</h5>
-                                <h1>- / n</h1>
-                            </div>
-                        </div>
-                        <div class="card--stats">
-                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>DD/MM/YYYY</span>
-                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>LOCATION</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-    </section>
-    <script src="{{ asset('js/dashboard/main.js') }}"></script>
+    </div>
+</section>
+<script>
+    // Create a blank emails array
+    let emails = [];
+
+    function openModal() {
+        document.getElementById('eventModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('eventModal').style.display = 'none';
+    }
+
+    // Function to handle email input and tag creation
+    function handleEmailInput(event) {
+        const emailInput = document.getElementById('email-input');
+        const tagsContainer = document.getElementById('tags-container');
+
+        if (event.key === 'Enter') {
+            const email = emailInput.value.trim();
+            if (email) {
+                // Check if the email already exists in the emails array
+                if (emails.includes(email)) {
+                    alert('This email has already been added!');
+                } else {
+                    const tag = createTag(email);
+                    tagsContainer.appendChild(tag);
+                    emails.push(email); // Add the email to the emails array
+                    emailInput.value = '';
+                }
+            }
+            event.preventDefault();
+        }
+
+        if (event.key === 'Backspace' && emailInput.value === '') {
+            const tags = tagsContainer.querySelectorAll('.tag');
+            if (tags.length > 0) {
+                tags[tags.length - 1].remove();
+                emails.pop(); // Remove the last email from the emails array
+            }
+        }
+    }
+
+    // Function to create a tag element
+    function createTag(email) {
+        const tag = document.createElement('div');
+        tag.classList.add('tag');
+
+        const emailSpan = document.createElement('span');
+        emailSpan.classList.add('email');
+        emailSpan.textContent = email;
+
+        const removeBtn = document.createElement('span');
+        removeBtn.classList.add('remove');
+        removeBtn.textContent = 'x';
+        removeBtn.addEventListener('click', () => tag.remove());
+
+        tag.appendChild(emailSpan);
+        tag.appendChild(removeBtn);
+
+        return tag;
+    }
+
+    // Function to open the admit deny modal
+    function openAdmitDenyModal() {
+        const overlay = document.getElementById('admitDenyOverlay');
+        overlay.style.display = 'block';
+    }
+
+    // Function to close the admit deny modal
+    function closeAdmitDenyModal() {
+        const overlay = document.getElementById('admitDenyOverlay');
+        overlay.style.display = 'none';
+    }
+
+    // Attach click event listeners to Admit and Deny buttons on each card
+    const admitDenyButtons = document.querySelectorAll('.admit-deny-button');
+
+    admitDenyButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            openAdmitDenyModal();
+            // Add logic here to populate the table content dynamically based on the card clicked
+            // For instance, you can use data attributes on buttons to identify the specific card and update the table accordingly
+        });
+    });
+
+</script>
 </body>
 
 </html>

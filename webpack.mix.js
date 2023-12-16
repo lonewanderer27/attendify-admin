@@ -11,7 +11,12 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+mix.css('resources/css/app.css', 'public/css')
+    .js('resources/js/app.js', 'public/js')
+    .css('resources/css/dashboard.css', 'public/css')
+    .js('resources/js/dashboard.js', 'public/js')
+    .css('resources/css/signup.css', 'public/css')
+    .js('resources/js/signup.js', 'public/js')
+    .css('resources/css/statistics.css', 'public/css')
+    .js('resources/js/statistics.js', 'public/js')
+    .copyDirectory('resources/images', 'public/images')

@@ -53,18 +53,17 @@ class EventController extends Controller
         ]);
     }
 
-    public function store(Request $request): \Illuminate\Http\JsonResponse
-    {
+    public function adminStore(Request $request) {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255|unique:events',
             'photo' => 'nullable|url',
             'description' => 'nullable|string',
-            'start' => 'required|date',
-            'end' => 'required|date|after_or_equal:start',
+            'date' => 'required|date_format:Y-m-d',
+            'time' => 'required',
             'location' => 'required|string',
-            'capacity' => 'required|integer',
             'organizer' => 'required|string',
             'organizer_email' => 'required|email',
+            'organizer_approval' => 'required|boolean',
             'user_id' => 'required|integer|exists:users,id',
             'invite_code' => 'required|string|unique:events'
         ]);
@@ -82,12 +81,62 @@ class EventController extends Controller
             'title' => $request->title,
             'photo' => $request->photo,
             'description' => $request->description,
-            'start' => $request->start,
-            'end' => $request->end,
+            'date' => $request->date,
+            'time' => $request->time,
             'location' => $request->location,
-            'capacity' => $request->capacity,
             'organizer' => $request->organizer,
             'organizer_email' => $request->organizer_email,
+            'organizer_approval' => $request->organizer_approval,
+            'user_id' => $request->user_id,
+            'invite_code' => $request->invite_code
+        ]);
+
+        $eventWithAttendeesCount = Event::withCount('attendees')->find($event->id);
+
+        if ($eventWithAttendeesCount) {
+            return redirect('/')->with('success', 'Event created successfully');
+        } else {
+            return view('dashboard', [
+                'events' => null,
+            ])->with('error', 'Event not created');
+        }
+    }
+
+    public function store(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255|unique:events',
+            'photo' => 'nullable|url',
+            'description' => 'nullable|string',
+            'date' => 'required|date_format:Y-m-d',
+            'time' => 'required',
+            'location' => 'required|string',
+            'organizer' => 'required|string',
+            'organizer_email' => 'required|email',
+            'organizer_approval' => 'required|boolean',
+            'user_id' => 'required|integer|exists:users,id',
+            'invite_code' => 'required|string|unique:events'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "message" => "Validation failed",
+                "errors" => $validator->errors(),
+                "error" => true,
+                "success" => false
+            ], 422); // 422 Unprocessable Entity
+        }
+
+        $event = Event::create([
+            'title' => $request->title,
+            'photo' => $request->photo,
+            'description' => $request->description,
+            'date' => $request->date,
+            'time' => $request->time,
+            'location' => $request->location,
+            'organizer' => $request->organizer,
+            'organizer_email' => $request->organizer_email,
+            'organizer_approval' => $request->organizer_approval,
             'user_id' => $request->user_id,
             'invite_code' => $request->invite_code
         ]);

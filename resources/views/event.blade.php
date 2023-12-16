@@ -29,7 +29,7 @@
 
     <div class="main" id="main">
             <div class="main-1-1">
-                <video id="preview" width="100%"></video>
+                <video id="preview" width="100%" autoplay></video>
             </div>
 
             <div class="main-1-2">
@@ -38,7 +38,7 @@
         <!-- <form action="#" onsubmit="event.preventDefault(); postComment()">
                   <input type="text" name="text" rows="3" cols="30" id="comment" readonly="" placeholder="Scan the DIC in front of the camera." class="form-control"><br>
         </form> -->
-        <form 
+        <form
             method="post"
             action="https://sheetdb.io/api/v1/rxkwzdnr7nedb"
             id="sheetdb-form">
@@ -52,7 +52,7 @@
             <input name="data[current_time]" type="hidden" id="current_time">
             <input name="data[current_date]" type="hidden" id="current_date">
         </form>
-        
+
         <p><b>NOTE: </b> DIC stands for Digital Identification Card.</p><br>
         <div>
           <hr>
@@ -64,7 +64,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 
-    <script scr="{{ asset('js/event/main.js') }}"> </script>
+    <script scr="{{ asset('js/event/dashboard.js') }}"> </script>
     <script src="{{ asset('js/event/clock.js')}}" type="text/javascript"> </script>
 </body>
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -127,5 +128,62 @@ class UserController extends Controller
                 "success" => false
             ], 500); // 500 Internal Server Error
         }
+    }
+
+    // ADMIN ROUTES
+
+    public function adminShowSignup() {
+        return view("signup");
+    }
+
+    public function adminLogout(Request $request) {
+        auth()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/signup')->with('message', 'You have been logged out!');
+    }
+
+    public function adminLogin(Request $request) {
+        $formFields = $request->validate([
+            'email'=> ['required', 'email'],
+            'password' => 'required'
+        ]);
+
+        if (auth()->attempt($formFields)) {
+            $request->session()->regenerate();
+
+            return redirect('/')->with('message', 'You are now logged in!');
+        }
+
+        return back()->withErrors([
+            'email' => 'Invalid Credentials'
+        ])->onlyInput();
+    }
+
+    public function adminStore(Request $request) {
+        $validator = Validator::make($request->all(), [
+            "name" => "required",
+            "email" => "required|email|unique:users",
+            "password" => "required"
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $user = User::create([
+            "name" => $request->name,
+            "email" => $request->email,
+            "password" => Hash::make($request->password),
+        ]);
+
+        // login
+        auth()->login($user);
+
+        // redirect
+        return redirect('/')->with('message', "User created and logged in!");
     }
 }
