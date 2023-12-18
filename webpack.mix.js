@@ -12,11 +12,15 @@ const mix = require('laravel-mix');
  */
 
 mix.css('resources/css/app.css', 'public/css')
-    .js('resources/js/app.js', 'public/js')
+    .js('resources/js/app.js', 'public/js').react()
     .css('resources/css/dashboard.css', 'public/css')
     .js('resources/js/dashboard.js', 'public/js')
+    .js('resources/js/Components/AdminDenyTable.jsx', 'public/js/Components').react()
     .css('resources/css/signup.css', 'public/css')
     .js('resources/js/signup.js', 'public/js')
     .css('resources/css/statistics.css', 'public/css')
     .js('resources/js/statistics.js', 'public/js')
+    .css('resources/css/event.css', 'public/css')
+    .js('resources/js/event/clock.js', 'public/js/event')
+    .js('resources/js/event/main.js', 'public/js/event')
     .copyDirectory('resources/images', 'public/images')

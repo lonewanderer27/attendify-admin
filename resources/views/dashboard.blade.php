@@ -13,9 +13,9 @@
 </head>
 
 <body>
-@include("partials._header")
+@include('partials._header')
 <section class="main">
-    @include("partials._sidebar")
+    @include('partials._sidebar')
     <div class="main--content">
         <div class="overview">
             <div class="title">
@@ -91,11 +91,12 @@
                     <div class="card card-1">
                         <div class="card--data">
                             <div class="card--content">
-                                <img src="{{ asset('images/conference-img.jpg') }}" alt="" class="card--img">
+                                <img src="{{ asset('images/conference-img.jpg') }}" alt=""
+                                     class="card--img">
                                 <h1 class="card--title">{{ $event->title }}</h1>
                                 <h5>ATTENDEES</h5>
                                 <h1>
-                                    @if($event->invited_guests_count > 0)
+                                    @if ($event->invited_guests_count > 0)
                                         {{ $event->attendees_count }} / {{ $event->invited_guests_count }}
                                     @else
                                         {{ $event->attendees_count }}
@@ -104,15 +105,21 @@
                             </div>
                         </div>
                         <div class="card--stats">
-                            <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>
-                                {{ $event->date }}
-                            </span>
+                                <span><i class="ri-calendar-2-fill card--icon stat--icon"></i>
+                                    {{ $event->date }}
+                                </span>
                             <span><i class="ri-time-fill card--icon stat--icon"></i>{{ $event->time }}</span>
-                            <span><i class="ri-map-pin-2-fill card--icon map--pin"></i>{{ $event->location }}</span>
+                            <span><i
+                                    class="ri-map-pin-2-fill card--icon map--pin"></i>{{ $event->location }}</span>
                         </div>
                         <div class="card--buttons">
-                            <button class="scan-button">Scan</button>
-                            <button class="admit-deny-button">Admit and Deny</button>
+                            <button class="scan-button"
+                                    onclick="window.location.href = `{{ route('events') . '/id/' . $event->id . '/scanR' }}`">
+                                Scan
+                            </button>
+                            <button class="admit-deny-button" data-event_id="{{ $event->id }}">
+                                Admit and Deny
+                            </button>
                         </div>
                     </div>
                 @endforeach
@@ -121,105 +128,9 @@
             <div class="admit-deny-overlay" id="admitDenyOverlay">
                 <div class="admit-deny-modal">
                     <span class="close" onclick="closeAdmitDenyModal()">&times;</span>
-                    <h1>Event Name</h1>
-                    <!-- Insert the table HTML here -->
-                    <div class="admit-deny-table">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Requester</th>
-                                <th></th>
-                                <th>Email</th>
-                                <th>Settings</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="profile-column">
-                                    <div class="profile-picture"
-                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
-                                        <!-- Empty container for background image -->
-                                    </div>
-                                </td>
-                                <td>Name 1</td>
-                                <td>Email 1</td>
-                                <td>
-                                    <button class="admit-button">Admit</button>
-                                    <button class="deny-button">Deny</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="profile-column">
-                                    <div class="profile-picture"
-                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
-                                        <!-- Empty container for background image -->
-                                    </div>
-                                </td>
-                                <td>Name 1</td>
-                                <td>Email 1</td>
-                                <td>
-                                    <button class="admit-button">Admit</button>
-                                    <button class="deny-button">Deny</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="profile-column">
-                                    <div class="profile-picture"
-                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
-                                        <!-- Empty container for background image -->
-                                    </div>
-                                </td>
-                                <td>Name 1</td>
-                                <td>Email 1</td>
-                                <td>
-                                    <button class="admit-button">Admit</button>
-                                    <button class="deny-button">Deny</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="profile-column">
-                                    <div class="profile-picture"
-                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
-                                        <!-- Empty container for background image -->
-                                    </div>
-                                </td>
-                                <td>Name 1</td>
-                                <td>Email 1</td>
-                                <td>
-                                    <button class="admit-button">Admit</button>
-                                    <button class="deny-button">Deny</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="profile-column">
-                                    <div class="profile-picture"
-                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
-                                        <!-- Empty container for background image -->
-                                    </div>
-                                </td>
-                                <td>Name 1</td>
-                                <td>Email 1</td>
-                                <td>
-                                    <button class="admit-button">Admit</button>
-                                    <button class="deny-button">Deny</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="profile-column">
-                                    <div class="profile-picture"
-                                         style="background-image: url('{{ asset('images/conference-img.jpg') }}');">
-                                        <!-- Empty container for background image -->
-                                    </div>
-                                </td>
-                                <td>Name 1</td>
-                                <td>Email 1</td>
-                                <td>
-                                    <button class="admit-button">Admit</button>
-                                    <button class="deny-button">Deny</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+
+                    <!-- React is going to auto populate this table component -->
+                    <div class="admit-deny-table" id="admin-deny-table">
                     </div>
                 </div>
             </div>
@@ -227,6 +138,13 @@
     </div>
 </section>
 <script>
+    const events = @json($events);
+    console.log("events: ", events);
+
+    const event = events[0];
+    console.log("event: ", event);
+</script>
+<script defer>
     // Create a blank emails array
     let emails = [];
 
@@ -288,8 +206,20 @@
         return tag;
     }
 
+    // Function to redirect to event scan page
+    function openScanPage(event_id) {
+        window.location.replace(
+            {{-- "{{ route('events') . "/id/" . $event->id . "/scan" }}" --}} `${{ route('events') . '/id/' }} ${event_id} `
+        );
+    }
+
     // Function to open the admit deny modal
-    function openAdmitDenyModal() {
+    function openAdmitDenyModal(event_id) {
+        // console.log("event_id: ", event_id);
+        // console.log("events: ", events);
+        // let eventData = events[0];
+        // console.log("event: ", eventData);
+
         const overlay = document.getElementById('admitDenyOverlay');
         overlay.style.display = 'block';
     }
@@ -305,7 +235,8 @@
 
     admitDenyButtons.forEach(function (button) {
         button.addEventListener('click', function () {
-            openAdmitDenyModal();
+            const eventId = this.getAttribute('data-event_id');
+            openAdmitDenyModal(eventId);
             // Add logic here to populate the table content dynamically based on the card clicked
             // For instance, you can use data attributes on buttons to identify the specific card and update the table accordingly
         });

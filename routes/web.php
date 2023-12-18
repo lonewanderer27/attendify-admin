@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendeeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name("dashboard")->middleware('auth');
 Route::post('/events', [EventController::class, "adminStore"])->name("events")->middleware('auth');
+Route::get('/events/id/{id}/scan', [EventController::class, 'adminScan'])->name('adminScan');
+Route::get("/events/id/{id}/scanR", [EventController::class, 'adminScanR'])->name('adminScanR');
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -27,17 +30,13 @@ Route::get('/welcome', function () {
 Route::get('/signup', [UserController::class, 'adminShowSignup'])->name("signup");
 Route::post("/signup", [UserController::class, 'adminStore'])->name("signup");
 Route::post("/signin", [UserController::class, 'adminLogin'])->name('signin');
-Route::post("/logout", [UserController::class, 'adminLogout'])->name('logout');
+Route::get("/logout", [UserController::class, 'adminLogout'])->name('logout');
 
 Route::get('/activity', function () {
     return view('activity');
 })->name('activity');
 
 Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
-
-Route::get('/event', function () {
-    return view('event');
-})->name('event');
 
 Route::get('/welcome', function() {
     return view('welcome');

@@ -13,6 +13,7 @@ class Attendee extends Model
         'event_id',
         'user_id',
         'status',
+        'verified'
     ];
 
     // Relationship to User

@@ -19,6 +19,7 @@ class CreateAttendeesTable extends Migration
             $table->foreignId('event_id')->references('id')->on('events');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->boolean('status')->default(false);
+            $table->boolean('verified')->default(false);
         });
     }
 

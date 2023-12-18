@@ -29,15 +29,11 @@ $currentRoute = Route::currentRouteName();
                 <span class="sidebar--item">Statistics</span>
             </a>
         </li>
-        <form action="{{ route('logout') }}" method="post">
-            @csrf
-            <li>
-                <button type="submit">
-                    @csrf
-                    <span class="icon"><i class="ri-logout-box-r-line"></i></span>
-                    <span class="sidebar--item" type="submit">Logout</span>
-                </button>
-            </li>
-        </form>
+        <li>
+            <a onclick="window.location.href = `{{ route('logout') }}`">
+                <span class="icon"><i class="ri-logout-box-r-line"></i></span>
+                <span class="sidebar--item" type="submit">Logout</span>
+            </a>
+        </li>
     </ul>
 </div>
